@@ -1,0 +1,135 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+\usepackage{fancyvrb}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{libertine}
+\usepackage{courier}
+\usepackage{hyperref}
+%\usepackage[style=authoryear,backend=biber]{biblatex}
+\usepackage[babel]{csquotes}
+\usepackage{booktabs}
+\usepackage{multirow}
+%\addbibresource{literatur.bib}
+%\renewcommand*{\bibfont}{\footnotesize}
+
+\makeatletter
+\def\url@foostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\footnotesize\ttfamily}}}
+\makeatother
+\urlstyle{sf}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\tikzstyle{latent}=[circle,draw=black,semithick,inner sep=0pt,minimum size=10mm]
+\tikzstyle{manifest}=[rectangle,draw=black,semithick,inner sep=0pt,minimum size=10mm]
+\tikzstyle{const}=[regular polygon,regular polygon sides=3,draw=black!30,semithick,inner sep=0pt,minimum size=10mm]
+\tikzstyle{resid}=[inner sep=0pt,minimum size=4mm]
+\tikzstyle{corr}=[<->,shorten >=1pt,shorten <=1pt,>=stealth',semithick]
+\tikzstyle{coef}=[->,shorten >=1pt,shorten <=1pt,>=stealth',semithick]
+%\tikzset{venn circle/.style={draw,circle,minimum width=2cm,fill=#1,opacity=0.6}}
+\tikzset{venn circle/.style={draw,circle,minimum width=2cm}}
+
+%-------------------------------------------------------------------
+\beamertemplatenavigationsymbolsempty
+\makeatletter
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=.5cm,dp=1ex,left]
+    {author in head/foot}%
+    \hspace{.05cm}
+    \includegraphics[height=0.15cm]{80x15.png}
+    \hspace{.05cm}
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.666666\paperwidth,ht=.5cm,dp=1ex,right]
+    {date in head/foot}%
+    \vspace{-.1cm}
+    \includegraphics[height=0.3cm]{150px-Uni_Mannheim_Siegel.png}
+    \hspace{.05cm}
+    \includegraphics[height=0.3cm]{sswml_logo2.png}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+%-------------------------------------------------------------------
+\RecustomVerbatimEnvironment
+  {Verbatim}{Verbatim}
+  {frame=single,gobble=4,formatcom=\color{blue!50!black},}
+%fontsize=\footnotesize
+%-------------------------------------------------------------------
+\title{Forschungsseminar -- Social Data Science}
+\subtitle{Git Intro}
+\author[Beste \& Bethmann]{Jonas Beste und Arne Bethmann}
+\date{\includegraphics[height=1.5cm]{150px-Uni_Mannheim_Siegel.png} \\
+  \href{http://sswml.uni-mannheim.de/}{Professorship for Statistics \& Methodology} \\
+  HWS 2015}
+  
+%-------------------------------------------------------------------
+\begin{document}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Was ist ein Repository?}
+  \begin{itemize}
+    \item Eine Art Datenbank
+    \item Protokolliert Veränderungen an Dateien
+    \item Speichert neben Inhalten auch Zusatzinformationen: z.~B Wer und Wann
+    \item Bezieht sich auf ein Verzeichnis in dem man Dateien für ein Projekt abgelegt hat und bearbeitet
+    \item Gibt es \emph{lokal} auf dem eigenen Rechner und \emph{remote} z.~B. bei GitHub
+  \end{itemize}
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Der Workflow}
+  \begin{block}{Repository erstmalig lokal anlegen}
+  \begin{enumerate}
+    \item Klonen des Remote-Repositories um eine lokale Kopie anzulegen (\texttt{git clone})
+    \begin{itemize}
+    \item Dadurch wir sowohl eine Kopie der Datenbank (versteckt, Unterverzeichnis \texttt{.git}) angelegt,
+    \item als auch die Dateien und Verzeichnisse des Repositories lokal angelegt (Arbeitskopie aka working copy)
+    \end{itemize}
+  \end{enumerate}
+  \begin{itemize}
+  \item Alternativ kann man auch ein ganz neues lokales Repository anlegen ohne auf ein Remote-Repository zurückzugreifen (\texttt{git init})
+  \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Der Workflow}
+
+  \begin{block}{Eigene Änderungen einpflegen}
+  \begin{enumerate}
+    \item Eine oder mehrere Dateien bearbeiten
+    \item Einige oder alle der geänderten Dateien zum Einpflegen ins lokale Repository vormerken (aka staging, \texttt{git add})
+    \item Einpflegen der Änderungen an den vorgemerkten Dateien in das lokale Repository (\texttt{git commit})
+      \begin{itemize}
+      \item Dazu muss ein Kommentar eingegeben werden, der möglichst knapp aber verständlich die Änderungen beschreibt
+      \item Es empfiehlt sich immer miteinander zusammenhängende Änderungen zu einem commit zusammenzufassen
+      \end{itemize}
+    \item Die Änderungen am lokalen Repository mit dem Remote-Repository abgleichen um die Änderungen für alle verfügbar zu machen (\texttt{git push})
+  \end{enumerate}
+  \end{block}
+
+\end{frame}
+
+
+
+%-------------------------------------------------------------------
+\end{document}
