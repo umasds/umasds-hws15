@@ -41,16 +41,16 @@
   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=.5cm,dp=1ex,left]
     {author in head/foot}%
     \hspace{.05cm}
-    \includegraphics[height=0.15cm]{80x15.png}
+    \includegraphics[height=0.15cm]{../../img/80x15.png}
     \hspace{.05cm}
     \usebeamerfont{author in head/foot}\insertshortauthor
   \end{beamercolorbox}%
   \begin{beamercolorbox}[wd=.666666\paperwidth,ht=.5cm,dp=1ex,right]
     {date in head/foot}%
     \vspace{-.1cm}
-    \includegraphics[height=0.3cm]{150px-Uni_Mannheim_Siegel.png}
+    \includegraphics[height=0.3cm]{../../img/150px-Uni_Mannheim_Siegel.png}
     \hspace{.05cm}
-    \includegraphics[height=0.3cm]{sswml_logo2.png}
+    \includegraphics[height=0.3cm]{../../img/sswml_logo2.png}
   \end{beamercolorbox}}%
   \vskip0pt%
 }
@@ -65,7 +65,7 @@
 \title{Forschungsseminar -- Social Data Science}
 \subtitle{Git Intro}
 \author[Beste \& Bethmann]{Jonas Beste und Arne Bethmann}
-\date{\includegraphics[height=1.5cm]{150px-Uni_Mannheim_Siegel.png} \\
+\date{\includegraphics[height=1.5cm]{../../img/150px-Uni_Mannheim_Siegel.png} \\
   \href{http://sswml.uni-mannheim.de/}{Professorship for Statistics \& Methodology} \\
   HWS 2015}
   
@@ -109,6 +109,21 @@
 \end{frame}
 
 
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Der Workflow}
+
+  \begin{block}{Lokales Repository updaten}
+  \begin{itemize}
+  \item Bevor nach einer Pause wieder mit der Arbeit begonnen wird sollten immer zwischenzeitliche Änderungen am Remote-Repository heruntergeladen werden
+  \end{itemize}
+  \begin{enumerate}
+    \item Lokales Repository auf den Stand des Remote-Repository bringen (\texttt{git pull})
+  \end{enumerate}
+  \end{block}
+
+\end{frame}
+
 
 %-------------------------------------------------------------------
 \begin{frame}
@@ -130,6 +145,54 @@
 \end{frame}
 
 
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Der Workflow}
+  
+  \begin{block}{Zustand der Arbeitskopie anzeigen}
+  \begin{enumerate}
+  \item Status der Änderungen an der Arbeitskopie ausgeben (\texttt{git status})
+    \begin{itemize}
+    \item Änderungen die im Staging-Bereich liegen (nach einem \texttt{git add}) und bei einem \texttt{git commit} comitted würden
+    \item Änderungen an Dateien, die noch nicht im Staging-Bereich liegen (vor einem \texttt{git add})
+    \item Dateien, die (noch) nicht von Git versioniert werden (was man per \texttt{git add} ändern kann
+  \end{itemize}
+  \end{enumerate}
+  \end{block}
+  
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Der Workflow}
+
+  \begin{block}{Mit vermeintlichen Konflikten umgehen}
+  \begin{enumerate}
+  \item Der Versuch Änderungen am lokalen Repository ins Remote-Repository zu übertragen (\texttt{git push}) scheitert, weil zwischenzeitlich Änderungen am Remote-Repository durchgeführt wurden
+  \item Änderungen am Remote-Repository lokal einpflegen und eigene Änderungen auf diesen Stand übertragen (\texttt{git pull {-{}-}rebase})
+  \end{enumerate}
+  \end{block}
+
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Der Workflow}
+
+  \begin{block}{Mit echten Konflikten umgehen}
+  \begin{enumerate}
+  \item Der Versuch ein rebase durchzuführen scheitert mit einem merge-Konflikt
+  \item Datei mit Konflikt bearbeiten um den Konflikt aufzulösen
+  \item Korrigierte Datei in den Staging-Bereich schieben (\texttt{git add})
+  \item Das rebase fortsetzen (\texttt{git rebase {-{}-}continue})
+  \end{enumerate}
+  \end{block}
+
+\end{frame}
+
+%https://de.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow
 
 %-------------------------------------------------------------------
 \end{document}
