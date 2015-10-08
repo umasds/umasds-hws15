@@ -1,0 +1,122 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+\usepackage{fancyvrb}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{libertine}
+\usepackage{courier}
+\usepackage{hyperref}
+%\usepackage[style=authoryear,backend=biber]{biblatex}
+\usepackage[babel]{csquotes}
+\usepackage{booktabs}
+\usepackage{multirow}
+%\addbibresource{literatur.bib}
+%\renewcommand*{\bibfont}{\footnotesize}
+
+\makeatletter
+\def\url@foostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\footnotesize\ttfamily}}}
+\makeatother
+\urlstyle{sf}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\tikzstyle{latent}=[circle,draw=black,semithick,inner sep=0pt,minimum size=10mm]
+\tikzstyle{manifest}=[rectangle,draw=black,semithick,inner sep=0pt,minimum size=10mm]
+\tikzstyle{const}=[regular polygon,regular polygon sides=3,draw=black!30,semithick,inner sep=0pt,minimum size=10mm]
+\tikzstyle{resid}=[inner sep=0pt,minimum size=4mm]
+\tikzstyle{corr}=[<->,shorten >=1pt,shorten <=1pt,>=stealth',semithick]
+\tikzstyle{coef}=[->,shorten >=1pt,shorten <=1pt,>=stealth',semithick]
+%\tikzset{venn circle/.style={draw,circle,minimum width=2cm,fill=#1,opacity=0.6}}
+\tikzset{venn circle/.style={draw,circle,minimum width=2cm}}
+
+%-------------------------------------------------------------------
+\beamertemplatenavigationsymbolsempty
+\makeatletter
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=.5cm,dp=1ex,left]
+    {author in head/foot}%
+    \hspace{.05cm}
+    \includegraphics[height=0.15cm]{../../img/80x15.png}
+    \hspace{.05cm}
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.666666\paperwidth,ht=.5cm,dp=1ex,right]
+    {date in head/foot}%
+    \vspace{-.1cm}
+    \includegraphics[height=0.3cm]{../../img/150px-Uni_Mannheim_Siegel.png}
+    \hspace{.05cm}
+    \includegraphics[height=0.3cm]{../../img/sswml_logo2.png}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+%-------------------------------------------------------------------
+\RecustomVerbatimEnvironment
+  {Verbatim}{Verbatim}
+  {frame=single,gobble=4,formatcom=\color{blue!50!black},}
+%fontsize=\footnotesize
+%-------------------------------------------------------------------
+\title{Forschungsseminar -- Social Data Science}
+\subtitle{Datensätze}
+\author[Beste \& Bethmann]{Jonas Beste und Arne Bethmann}
+\date{\includegraphics[height=1.5cm]{../../img/150px-Uni_Mannheim_Siegel.png} \\
+  \href{http://sswml.uni-mannheim.de/}{Professorship for Statistics \& Methodology} \\
+  HWS 2015}
+  
+%-------------------------------------------------------------------
+\begin{document}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{ALLBUS}
+  \begin{itemize}
+  \item Wiederholte Querschnitte alle 2 Jahre seit 1980
+  \item Repräsentativ für deutsche Wohnbevölkerung
+  \item Ca. 3000 Interviews im CAPI-Modus
+  \item \href{http://www.gesis.org/allbus/allbus-inhalte/schwerpunktthemen/}{Vielfältige Themen}
+  \item \href{http://www.gesis.org/fileadmin/upload/dienstleistung/daten/umfragedaten/allbus/dokumente/STUDIEN.PDF}{Kurzbeschreibungen der einzelnen Befragung}
+  \item \href{http://www.gesis.org/allbus/datenzugang/}{Download}
+  \end{itemize}
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{PASS Campus File}
+  \begin{itemize}
+  \item Jährliche Panelbefragung
+  \item Bevölkerungsrepräsentativer Anteil und Sample von Hartz-IV-Beziehern
+  \item QCF: ca. 1100 HH und ca. 1600 Personen aus Welle 1 
+  \item LCF: ca. 5500 HH und ca. 7800 Personen aus Wellen 1--3
+  \item \href{http://doku.iab.de/fdz/reporte/2011/DR_06-11.pdf}{Datenreport mit Variablenübersicht}
+  \item \href{http://fdz.iab.de/de/campus-files/siab_cf/registration.aspx}{Download}
+  \end{itemize}
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{SIAB Campus File}
+  \begin{itemize}
+  \item Stichprobe der administrativen Erwerbsbiographien
+  \item Beschäftigung, Arbeitslosigkeit, Leistungsbezug, Arbeitsmarktpolitische Maßnahmen
+  \item Komplette Historien von ca. 6100 Personen
+  \item \href{http://doku.iab.de/fdz/reporte/2013/DR_05-13.pdf}{Datenreport mit Variablenübersicht}
+  \end{itemize}
+\end{frame}
+
+
+%-------------------------------------------------------------------
+\end{document}
