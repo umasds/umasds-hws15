@@ -1,0 +1,525 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+\usepackage{fancyvrb}
+\usepackage{amssymb}
+\usepackage{libertine}
+\usepackage{courier}
+\usepackage{hyperref}
+
+%-------------------------------------------------------------------
+\beamertemplatenavigationsymbolsempty
+\makeatletter
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=.5cm,dp=1ex,left]
+    {author in head/foot}%
+    \hspace{.05cm}
+    \includegraphics[height=0.15cm]{80x15.png}
+    \hspace{.05cm}
+    \usebeamerfont{author in head/foot}\insertauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.666666\paperwidth,ht=.5cm,dp=1ex,right]
+    {date in head/foot}%
+    \vspace{-.1cm}
+    \includegraphics[height=0.3cm]{150px-Uni_Mannheim_Siegel.png}
+    \hspace{.05cm}
+    \includegraphics[height=0.3cm]{sswml_logo2.png}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+%-------------------------------------------------------------------
+\RecustomVerbatimEnvironment
+  {Verbatim}{Verbatim}
+  {frame=single,numbers=left,numbersep=2pt,gobble=6,
+  formatcom=\color{blue!50!black},fontsize=\footnotesize}
+
+%-------------------------------------------------------------------
+\title{Einführung in R} 
+\subtitle{-- in 90 Minuten}
+\author{Jonas Beste \& Arne Bethmann}
+
+%-------------------------------------------------------------------
+\begin{document}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Überblick}
+  \begin{itemize}
+    \item In den nächsten knapp 90 Minuten werden Sie lernen 
+      selbstständig statistische Analysen in R durchzuführen. Das 
+      beinhaltet
+  \end{itemize}
+  \begin{description}
+    \item[Ziel 1] das Arbeiten mit R-Studio
+    \item[Ziel 2] mathematischen Operationen, Funktionen und Zuweisungen
+    \item[Ziel 3] die Erstellung von Grafiken
+    \item[Ziel 4] den Zugang zu interne und externe Hilfe und Dokumentationen
+    \item[Ziel 5] das Arbeiten mit Skripten um Ergebnisse reproduzieren zu können
+    \item[Ziel 6] das Arbeiten mit Schleifen
+    \item[Ziel 7] den Einblick in zusätzliche R-Pakete (\Verb+foreign+, \Verb+data.table+, \Verb+dplyr+, , \Verb+ggplot2+)
+  \end{description}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Was ist R?}
+  \begin{itemize}
+    \item R ist eine Rechensoftware für statistische Analysen
+    \item Die Software ist frei zugänglich   
+    \item Es stehen viele Zusatzpakete und hilfreiche Blogs zur Verfügung  
+    \item Weitere Informationen zu R finden sich auf \url{http://www.r-project.org/}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{R-Studio}
+  \begin{itemize}
+    \item Mit R ist umfangreiches Arbeiten möglich
+    \item Es empfiehlt sich jedoch, das Programm mit der Freeware R-Studio zu kombinieren
+    \item Diese bietet eine gut strukturierte Benutzeroberfläche und einige Zusatzfunktionen     
+    \item Verfügbar über \url{http://www.rstudio.org/}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Arbeitsverzeichnis}
+  \begin{itemize}
+    \item Das Arbeitsverzeichnis ist der Ort auf dem Rechner, in dem aktuell gearbeitet wird
+    \item Vor Beginn sollte R mitgeteilt werden, wo die Daten und Skripte liegen oder abgespeichert werden sollen:
+    \begin{Verbatim}[firstnumber=1]
+       > setwd("directoryname")
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Mathematische Operationen und logische Abfragen}
+  \begin{itemize}
+    \item In R können mathematische Operationen durchgeführt werden:
+    \begin{Verbatim}
+      > 4^2 + 8
+      [1] 24
+    \end{Verbatim}
+      \item Und Aussagen auf ihre Richtigkeit geprüft werden:
+    \begin{Verbatim}
+      > 2 == 1
+      [1] False
+      > 2 >= 1
+      [1] TRUE
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Mathematische Operationen und logische Abfragen}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+         \begin{enumerate}
+      		\item Spielen Sie ein wenig mit den mathematischen Operationen und den logische Abfragen
+      		\item Wie viel Prozent der Zeit einer Woche verbringen Sie mit der Vor- und Nachbereitung von Univeranstaltungen?
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Zuweisungen}
+  \begin{itemize}
+    \item Man kann Werten einen Namen zuweisen:
+    \begin{Verbatim}
+      > a <- 2
+      > a * 3
+      [1] 6
+    \end{Verbatim}
+   \item Diese Objekte können jederzeit überschrieben werden:
+    \begin{Verbatim}
+      > a <- a + 5
+      > a
+      [1] 7
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Zuweisungen}
+  \begin{itemize} 
+  \item Neben Skalaren können auch Vektoren erstellt werden:
+    \begin{Verbatim}
+      > b <- c(1,3,5)
+      > b > 3
+      [1] FALSE FALSE TRUE
+    \end{Verbatim}
+   \item Für Matrizen kann u.a. die Funktion \Verb+matrix+ verwendet werden:
+    \begin{Verbatim}
+      > mat = matrix(data=c(1,2,3,4,5,6), ncol=3)
+      > mat
+             [,1] [,2] [,3]
+      [1,    1    3    5
+      [2,]	  2    4    6
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Zuweisungen}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+         \begin{enumerate}
+      		\item Berechnen Sie den Monatslohn bei 40 Wochenstunden und 10 Euro Stundenlohn. Verwenden Sie dabei Namen für die beiden Werte.
+      		\item Variieren Sie nun die Werte beider Variablen.
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Funktionen}
+  \begin{itemize}
+    \item In R und weiteren Paketen sind viele Funktionen enthalten
+    \item Der natürliche Logarithmus von 100:    
+    \begin{Verbatim}
+      > log(100)
+      [1] 4.60517
+    \end{Verbatim}    
+    \item Der Logarithmus von 100 zur Basis 10:    
+    \begin{Verbatim}
+      > log(100, base = 10)
+      [1] 2
+    \end{Verbatim}
+   \item Der Logarithmus von 100 zur Basis 10:    
+    \begin{Verbatim}
+      > mean(c(1,3,5))
+      [1] 3
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Funktionen}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+         \begin{enumerate}
+      		\item Berechnen Sie die Summe der Zahlen 3, 13, 7, 24 und 11. Füge Sie diese hierfür zunächst in einen Vektor zusammen und verwenden Sie dann die Funktion \Verb+sum()+
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Plots}
+  \begin{itemize}
+    \item Mit der Funktion \Verb+rnorm()+ lassen sich Zufallszahlen generieren:    
+    \begin{Verbatim}
+      > x=rnorm(100)
+      > y=rnorm(100)
+         \end{Verbatim}    
+    \item Mit der Funktion \Verb+plot()+ lassen sich Graphiken erstellen:    
+    \begin{Verbatim}
+      > plot(x,y)
+      > plot(x,y,xlab="Das ist die x-Achse",ylab=
+      + "Das ist die y-Achse", main="Plot von X und Y")
+    \end{Verbatim}       
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Hilfe und Dokumentation}
+  \begin{itemize}
+    \item Für R gibt es eine große Menge an Dokumentationen und Hilfen
+    \item Eine Kurzhilfe kann über den Befehl \Verb+help()+ abgerufen werden:
+    \begin{Verbatim}
+      > help(mean)
+    \end{Verbatim}  
+    \item Der Befehl \Verb+help.start()+ startet die Onlinehilfe im Internetbrowser:
+    \begin{Verbatim}
+      > help.start(mean)
+    \end{Verbatim}        
+    \item Beispiele sind über den Befehl \Verb+example()+ verfügbar:
+    \begin{Verbatim}
+      > example(mean)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Links}
+  \begin{itemize}
+    \item Ausführliches Manual: \url{http://cran.r-project.org/doc/manuals/R-intro.pdf}
+    \item Kurze Reference Card: \url{http://cran.r-project.org/doc/contrib/Short-refcard.pdf}
+    \item R-Wiki: \url{http://wiki.r-project.org/rwiki/doku.php}
+    \item Geheimtipp: Google (z.B. "r project mean").
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Skript}
+  \begin{itemize}
+    \item R verarbeitet Kommandos
+    \item Die Kommando können in Skripten dokumentiert werden
+    \item R-Skripte haben die Endung .R, z.B. umasds.R
+    \item Teile des Codes können ausgeführt werden (hierbei werden diese an die Kommandozeile übergeben), indem  man die Zeile markiert und CTRL+ENTER drückt
+    \item Das komplette Skript kann über den Befehlt \Verb+source()+ ausgeführt werden:
+    \begin{Verbatim}
+      > source("umasds.R")
+    \end{Verbatim}
+    \item Kommentare sind möglich, indem ein Rautezeichen \# davor geschrieben wird. Alles darauf Folgende bleibt unberücksichtigt
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Skript}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+      Erstellen Sie ein Skript mit dem Namen ErstesSkript.R. Dieses Skript soll Code enthalten, bei dem 100 zufällige Zahlen erzeugen und geplottet werden und der Mittelwert der Zahlen bestimmt werden. Bei Bedarf informieren sie sich über die unterschiedlichen Quellen über die Funktionen. Lassen Sie das Skript wiederholt durchlaufen. Denken Sie daran das Skript zu kommentieren.
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Zugriff auf Objekte}
+  \begin{itemize}
+    \item Elemente von Objekten können über \Verb+[i]+ direkt angesprochen werden:
+    \begin{Verbatim}
+      > b
+      [1] 1 3 5
+      > b[2]
+      [2] 3
+    \end{Verbatim}  
+    \item Bei Matrix können auch Spalten oder Zeilen angegeben werden:
+    \begin{Verbatim}
+       > mat[1,]
+      [1] 1 3 5
+    \end{Verbatim}  
+    \item Hierüber können Elemente ersetzt werden:
+    \begin{Verbatim}
+      > mat[1,1] <- 7
+      > mat
+            [,1] [,2] [,3]
+      [1,]   7    3    5
+      [2,]   2    4    6
+    \end{Verbatim}        
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Zugriff auf Objekte}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+      Erstellen Sie eine 3x3 Matrix. Ersetzen Sie einzelne Zellen der Matrix durch neue Werte.
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Schleifen}
+  \begin{itemize}
+    \item Mit Schleifen lässt sich eine größere Anzahl von Befehlen wiederholt anwenden
+    \item An häufigsten nutzt man for-Schleifen:
+    \begin{Verbatim}
+      > d = seq(from=1, to=10)
+      > e = c()
+      > for(i in 2 :12)
+         {
+         e[i] = d[i] * 10
+         }
+      > e
+      [1] NA 20 30 40 50 60 70 80 90 100 NA NA  
+ \end{Verbatim}
+    \item Daneben gibt es noch repeat-Schleifen und while-Schleifen
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{If-Bedingungen}
+  \begin{itemize}
+\item Ebenfalls hilfreich sind if/else-Bedingungen:
+     \begin{Verbatim}
+      > Gr50 <- ifelse(e > 50, "Gr50", "KlGl50")
+      > table(Gr50)
+    \end{Verbatim}   
+\item Es gibt auch sehr kurze Varianten:
+     \begin{Verbatim}
+      > f <- c(1,2,3,4)
+      > g <- f[f==1 | f==4] 
+      > g
+      [1] 1 4
+    \end{Verbatim}     
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Schleifen und if-Bedingungen}
+ \begin{itemize}
+   \item \textbf{Aufgabe} \\ 
+  Erstellen Sie einen Vektor von 1 bis 100. Nutzen Sie hierfür die \Verb+seq+ Funktion. Informieren Sie sich hierüber über die Hilfefunktion. Multiplizieren Sie mit Hilfe einer for-Schleife alle Elemente die kleiner 26 und größer 74 sind mit 10  und alle anderen Elemente mit 0,1.
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Datenfiles laden und speichern}
+  \begin{itemize}
+    \item Datenfiles können in R in unterschiedlicher Weise geladen und gespeichert werden, hier eine Variante:
+\begin{Verbatim}
+      > data = data.frame(a = c(1,2,3), b = c(4,5,6))
+      > data
+        a b
+      1 1 4
+      2 2 5
+      3 3 6
+      > write.table(data, file="test.txt", row.names=F)
+      > data2 = read.table(file="test.txt", header=T)
+      > data2
+        a b
+      1 1 4
+      2 2 5
+      3 3 6
+\end{Verbatim}
+\item R-Datenfiles mit der Endung \Verb+.Rdt+ und \Verb+.RData+ lassen sich über die Befehle \Verb+load()+ oder \Verb+data()+ laden
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Pakete verwenden}
+  \begin{itemize}
+    \item Pakete enthalten Erweiterungen zu R
+    \item Das umfasst Datenfiles, erweiterte Rechenoperationen, neue statistische Verfahren usw.
+    \item Die verfügbaren Pakete sind unter \url{https://cran.r-project.org/web/packages/} einsehbar
+    \item Die Installation von Programmpaketen erfolgt über den Befehl:
+    \begin{Verbatim}
+      > install.packages ("Paketname")
+    \end{Verbatim}
+    \item Das Aufrufen eines Pakets aus der Programmbibliothek erfolgt über den Befehl:
+    \begin{Verbatim}
+      > library(Paketname)
+    \end{Verbatim}  
+    \item Mit dem Befehl \Verb+search()+ erhält man eine Übersicht über alle gestarteten, mit \Verb+library()+ über alle installierten Pakete.
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Pakete foreign}
+  \begin{itemize}
+    \item Paket zum Öffnen anderer Datentypen wie .SAV (SPSS) und .dta (Stata)
+    \item \url{https://cran.r-project.org/web/packages/foreign/foreign.pdf}
+    \item Installieren und laden:
+    \begin{Verbatim}
+      > install.packages("foreign")
+      > library(foreign)
+      > help(read.dta)
+      > Data <- read.dta(".../test.dta", to.data.frame=T)
+      > help(data.table)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Pakete data.table}
+  \begin{itemize}
+    \item Paket enthält Befehle zum einfacheren und schnelleren Umgang mit größeren Objekten
+    \item It combines database like operations such as subset, with and by and provides similar joins that merge provides but faster
+    \item \url{https://cran.r-project.org/web/packages/data.table/data.table.pdf}
+     \item Installieren und laden:
+    \begin{Verbatim}
+      > install.packages("data.table")
+      > library(data.table)
+      > help(data.table)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Pakete dplyr}
+  \begin{itemize}
+    \item Umfangreiche Sammlung von Befehlen für einfache Datenaufbereitung
+    \item \url{https://cran.r-project.org/web/packages/dplyr/dplyr.pdf}
+    \item Installieren und laden:
+    \begin{Verbatim}
+      > install.packages("dplyr")
+      > library(dplyr)
+      > help(filter)
+      > help(arrange)
+      > help(select)
+      > help(distinct)
+      > help(mutate)
+      > help(summarise)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Paket ggplot2}
+  \begin{itemize}
+    \item Paket um elegante und aufwendige Graphiken zu erstellen
+    \item Funktion qplot() (steht für quick plot) wenn schnell gehen soll
+    \item \url{https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf}
+    \item Installieren und laden:
+    \begin{Verbatim}
+      > install.packages("ggplot2")
+      > library(ggplot2)    
+      > help(qplot)
+      \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Ende}
+  \begin{center}
+    \LARGE \bfseries
+    Herzlichen Glückwunsch!
+  \end{center}
+  \vspace{18pt}
+  Sie haben die ersten Schritte mit R bewältigt. Jetzt heißt es weitermachen. Am besten lernt man R in der Anwendung.
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Was kommt als nächstes?}
+  \begin{itemize}
+    \item Wir konnten hier nicht alle Möglichkeiten von R ansprechen. Informieren Sie sich jetzt oder bei Bedarf u.a. über:
+        \begin{itemize}
+    \item Weitere Funktionen wie \Verb+head()+, \Verb+str()+, \Verb+table+, \Verb+summary()+ u.v.m.
+    \item Rechnen mit Vektoren und Matrizen 
+    \item Umgang mit fehlenden Werten (\Verb+NaN+, \Verb+NA+, \Verb+na.omit()+)
+    \item Weitere Pakete, z.B. \Verb+stringr+, \Verb+lattice+, \Verb+knitr+ u.v.m.
+    \item Datentypen, z.B. \Verb+is.matrix()+ oder \Verb+is.data.frame()+
+    \item Möglichkeiten Daten zu trennen, zusammenzufügen und zu sortieren (\Verb+subset()+, \Verb+cbind()+, \Verb+rbind()+, \Verb+sort()+, \Verb+order()+)
+    \item Zufallszahlen und Stichproben (\Verb+sample()+)
+    \item Eigene Funktionen schreiben mit \Verb+function()+
+    \item Modellierungen, hierfür stehen wie Pakete bereit
+  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\end{document}

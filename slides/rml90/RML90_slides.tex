@@ -1,0 +1,397 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{fancyvrb}
+\usepackage{amssymb}
+\usepackage{libertine}
+\usepackage{courier}
+\usepackage{hyperref}
+
+%-------------------------------------------------------------------
+\beamertemplatenavigationsymbolsempty
+\makeatletter
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=.5cm,dp=1ex,left]
+    {author in head/foot}%
+    \hspace{.05cm}
+    \includegraphics[height=0.15cm]{80x15.png}
+    \hspace{.05cm}
+    \usebeamerfont{author in head/foot}\insertauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.666666\paperwidth,ht=.5cm,dp=1ex,right]
+    {date in head/foot}%
+    \vspace{-.1cm}
+    \includegraphics[height=0.3cm]{150px-Uni_Mannheim_Siegel.png}
+    \hspace{.05cm}
+    \includegraphics[height=0.3cm]{sswml_logo2.png}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+%-------------------------------------------------------------------
+\RecustomVerbatimEnvironment
+  {Verbatim}{Verbatim}
+  {frame=single,numbers=left,numbersep=2pt,gobble=6,
+  formatcom=\color{blue!50!black},fontsize=\footnotesize}
+
+%-------------------------------------------------------------------
+\title{Machine Learning in R}
+\subtitle{-- in 90 Minuten}
+\author{Jonas Beste \& Arne Bethmann}
+
+%-------------------------------------------------------------------
+\begin{document}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Einstieg}
+  \begin{itemize}
+    \item Anwendung von Machine Learning Methoden in R
+    \item Einstiegsbuch \url{http://www-bcf.usc.edu/~gareth/ISL/}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{ML-Pakete in R}
+  \begin{itemize}
+    \item Viele Pakete für einzelnen Machine Learning Methoden (\Verb+caret+, \Verb+klaR+,  \Verb+e1071+, \Verb+rpart+, \Verb+randomForest+, u.v.m.)
+    \item Paket MLR vereint viele Methoden in einen gemeinsamen Framework
+    \item \url{https://cran.r-project.org/web/packages/mlr/mlr.pdf}
+  \end{itemize}
+\end{frame}
+
+\section{Modellauswahl}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Validation Set Approach}
+  \begin{itemize}
+    \item Daten \Verb+mtcars+ ansehen
+    \begin{Verbatim}
+      > str(mtcars)
+    \end{Verbatim}
+        \item Set setzen und Sample Index erstellen über \Verb+sample+ Funktion
+    \begin{Verbatim}
+      > set.seed(1)
+      > train=sample(32,16)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Validation Set Approach}
+  \begin{itemize}
+    \item 1. Model mit linearen Term und Berechnung des MSE
+    \begin{Verbatim}
+      > model1=lm(mpg~hp, data=mtcars, 
+      + subset=train)
+      > mean((mtcars$mpg - predict(model1, mtcars))
+      +[-train]^2)
+    \end{Verbatim}
+        \item 2. Model mit quadratischem Term
+    \begin{Verbatim}
+      > model2=lm(mpg~poly(hp, 2), data=mtcars, 
+      + subset=train)
+      > mean((mtcars$mpg - predict(model2, mtcars))
+      +[-train]^2)
+    \end{Verbatim}
+        \item 3. Model mit kubischem Term
+    \begin{Verbatim}
+      > model3=lm(mpg~poly(hp, 3), data=mtcars, 
+      + subset=train)
+      > mean((mtcars$mpg - predict(model3, mtcars))
+      +[-train]^2)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{k-Fold Cross-Validation}
+  \begin{itemize}
+    \item Daten \Verb+iris+ ansehen
+    \begin{Verbatim}
+      > str(iris)
+    \end{Verbatim}
+    \item Trainingsgruppe definieren über \Verb+trainControl+ Funktion
+    \begin{Verbatim}
+      > train_control <- trainControl(method="cv", 
+      + number=10)
+    \end{Verbatim}
+    \item Modell trainieren über \Verb+train+ Funktion
+    \begin{Verbatim}
+      > model <- train(Species~., data=iris, 
+      + trControl=train_control, method="knn")
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{k-Fold Cross-Validation}
+  \begin{itemize}
+    \item Vorhersagen machen
+    \begin{Verbatim}
+      > predictions <- predict(model, iris)
+    \end{Verbatim}
+    \item Ergebnisse zusammenfassen über \Verb+confusionMatrix+ Funktion
+    \begin{Verbatim}
+      > confusionMatrix(predictions, iris$Species)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Validation Set Approach}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+         \begin{enumerate}
+      		\item Verwenden die den Datensatz \Verb+cars+ und stehen Sie per Validation Set Approach fest, ob ein linearer, ein quadratischer oder ein kubischer Term der Variable \Verb+speed+ am besten die Variable \Verb+distance+ vorhersagt.
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\section{k-nearest-neighbor}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{k-nearest-neighbor}
+  \begin{itemize}
+    \item Zeit und Platz intenser Algorithmus
+    \item Beispiel:
+       \begin{itemize}
+	\item mit 2 Klassen A und B
+    \item 2 Prediktoren X1 und X2
+    \item 4 Fälle pro Klasse
+  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{k-nearest-neighbor}
+  \begin{itemize}
+    \item Klasse A Fälle
+    \begin{Verbatim}
+      > A1=c(2,4)
+      > A2=c(4,4.5)
+      > A3=c(1,3.5)
+      > A4=c(2.5,4)
+    \end{Verbatim}
+     \item Klasse B Fälle
+    \begin{Verbatim}
+      > B1=c(6,6.5)
+      > B2=c(6,7)
+      > B3=c(4,7)
+      > B4=c(5,7)
+    \end{Verbatim}  
+    \item Fälle zusammenführen
+        \begin{Verbatim}
+      > train=rbind(A1,A2,A3,B4,B1,B2,B3,B4) 
+        \end{Verbatim}  
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{k-nearest-neighbor}
+  \begin{itemize}
+     \item Klasse zuteilen
+    \begin{Verbatim}
+      > cl=factor(c(rep("A",4),rep("B",4)))
+    \end{Verbatim}
+      \item Plot von X1 und X2
+    \begin{Verbatim}
+      > plot(train)
+    \end{Verbatim}
+          \item Zu klassifizierender Fall
+    \begin{Verbatim}
+      > test=c(5,5)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{k-nearest-neighbor}
+  \begin{itemize}
+    \item Funktion \Verb+knn+ in Paket \Verb+class+
+    \begin{Verbatim}
+      > install.packages("class")
+      > library(class)
+      > help(knn)
+    \end{Verbatim}
+     \item Ergebnis der Klassifikation aufrufen
+    \begin{Verbatim}
+      > summary(knn(train, test, cl, k = 1))
+      A B
+      1 0
+    \end{Verbatim}       
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{k-nearest-neighbor}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+         \begin{enumerate}
+      		\item Variiere k
+      		\item Variiere die Werte des Testfalls
+      		\item Erstelle eine Matrix mit 10 Testfällen und klassifiziere die Fälle
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\section{Naive Bayes}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Naive Bayes}
+  \begin{itemize}
+    \item Klassifikation von Blumen im Datensatz \Verb+iris+
+    \item 3 verschiedene Blumenarten
+    \item Informationen zu Länge und Breite von Stängel und Blüte
+    \begin{Verbatim}
+      > str(iris)
+    \end{Verbatim}
+    \item Index für Trainings- und Testdaten mit Funktion \Verb+createDataPartition+ (Paket \Verb+caret+)
+    \begin{Verbatim}
+      > set.seed(1)
+      > trainIndex <- createDataPartition(iris$Species, 
+      + p=0.80, list=F)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Naive Bayes}
+  \begin{itemize}
+    \item Trainings- und Testdaten definieren
+    \begin{Verbatim}
+      > dataTrain=iris[trainIndex, ]
+      > dataTest=iris[-trainIndex, ]
+    \end{Verbatim}
+    \item Model bestimmen (\Verb+naiveBayes+ Funktion) und Testdaten klassifizieren
+    \begin{Verbatim}
+      > model <- naiveBayes(Species ~ ., data = dataTrain)
+      > table(predict(model, dataTest), dataTest$Species)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Naive Bayes}
+  \begin{itemize}
+    \item \textbf{Aufgabe} \\ 
+         \begin{enumerate}
+      		\item Schauen die den Datensatz \Verb+mpg+ an, erstellen Sie einen Trainings- und einen Testdatensatz (mit 25\% der Fälle im Testdatensatz) und klassifizieren Sie die Testdaten hinsichtlich der Variable \Verb+class+ mit Hilfe des Naive Bayes Klassifikators.
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\section{Entscheidungsbäume}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Entscheidungsbäume}
+  \begin{itemize}
+    \item Es gibt viele verschieden Pakete für Entscheidungsbäume
+    \item Wir nutzen hier zunächst \Verb+rpart+ mit dem Datensatz \Verb+kyphosis+
+    \begin{Verbatim}
+      > install.packages("rpart")
+      > library(rpart)
+      > str(kyphosis)
+    \end{Verbatim}
+    \item Baum wachsen lassen
+    \begin{Verbatim}
+      > fit <- rpart(Kyphosis ~ Age + Number + Start, 
+      + method="class", data=kyphosis)
+    \end{Verbatim}
+      \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Entscheidungsbäume}
+  \begin{itemize}
+    \item Ergebnisse darstellen
+    \item Wir nutzen hier zunächst \Verb+rpart+ mit dem Datensatz \Verb+kyphosis+
+    \begin{Verbatim}
+      > printcp(fit) 
+      > plotcp(fit) 
+      > summary(fit)
+    \end{Verbatim}
+    \item Plot des Baums
+    \begin{Verbatim}
+      > plot(fit, uniform=TRUE, 
+      + main="Classification Tree for Kyphosis")
+      > text(fit, use.n=TRUE, all=TRUE, cex=.8)
+    \end{Verbatim}
+      \end{itemize}
+\end{frame}
+
+\section{Random Forest}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Random Forest}
+  \begin{itemize}
+    \item Extra Paket \Verb+randomForest+
+    \begin{Verbatim}
+      > install.packages("randomForest")
+      > library(randomForest)
+    \end{Verbatim}
+    \item Jetzt lassen wir einen ganzen Wald wachsen
+    \begin{Verbatim}
+      > fit <- randomForest(Kyphosis ~ Age+Number+Start,
+      + data=kyphosis)
+    \end{Verbatim}
+    \item Und schauen uns das Ergebnis an
+    \begin{Verbatim}
+      > print(fit)
+      > importance(fit)
+    \end{Verbatim}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}[fragile]
+  \frametitle{Ende}
+  \begin{center}
+    \LARGE \bfseries
+    Herzlichen Glückwunsch!
+  \end{center}
+  \vspace{18pt}
+  Sie haben Ihre ersten Machine Learning Methoden in R gerechnet. Von hier ist es nur noch ein kurzer Weg bis zur Weltherrschaft.
+\end{frame}
+
+%-------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Was kommt als nun?}
+  \begin{itemize}
+    \item Die erste Hürde ist genommen. Jetzt heißt es weitermachen: 
+        \begin{itemize}
+        \item Weitere Bücher: The Elements of Statistical Learning (\url{http://statweb.stanford.edu/~tibs/ElemStatLearn/})
+    \item Lesen Sie Blogs: z.B. \url{http://machinelearningmastery.com/blog/} und \url{http://R-blogger.com}
+    \item Besuchen Sie Tutorials: z.B. \url{http://blog.datacamp.com/machine-learning-in-r/} und \url{http://https://www.coursera.org/course/datascitoolbox}
+  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------
+\end{document}
